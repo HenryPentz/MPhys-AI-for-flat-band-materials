@@ -9,7 +9,7 @@ from pymatgen.electronic_structure.bandstructure import BandStructureSymmLine
 from pymatgen.electronic_structure.dos import CompleteDos
 from pymatgen.electronic_structure.plotter import BSDOSPlotter
 
-def plot(material_id, data_directory):
+def plot(material_id, data_directory, e_bounds=[-4, 4]):
 
     # get bands data
     filename_bands = data_directory+f"/bands/{material_id}.json"
@@ -20,7 +20,7 @@ def plot(material_id, data_directory):
     bands=BandStructureSymmLine.from_dict(bands_dict)
 
     # create plotter object
-    bsp=BSDOSPlotter(font="DejaVu Sans")
+    bsp=BSDOSPlotter(vb_energy_range=-e_bounds[0], cb_energy_range=e_bounds[1], fixed_cb_energy=True, font="DejaVu Sans")
 
     filename_dos = data_directory+f"/dos/{material_id}.json"
     if os.path.isfile(filename_dos):
