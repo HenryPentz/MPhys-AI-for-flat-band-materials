@@ -58,7 +58,7 @@ def bare_plot(material_id, data_directory, plot_dos=False, e_bounds=[-4, 4]):
             axi.tick_params(left=False, bottom=False)
             axi.yaxis.grid(False)
             
-        plt.subplots_adjust(wspace=None, hspace=None)
+        plt.subplots_adjust(wspace=0)
         
     else:
         ax = bsp.get_plot(bands)  
