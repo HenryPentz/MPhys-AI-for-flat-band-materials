@@ -56,6 +56,7 @@ def bare_plot(material_id, data_directory, plot_dos=False, e_bounds=[-4, 4]):
             axi.spines['right'].set_visible(False)
             axi.spines['top'].set_visible(False)
             axi.tick_params(left=False, bottom=False)
+            axi.yaxis.grid(False)
             
         plt.subplots_adjust(wspace=None, hspace=None)
         
@@ -67,8 +68,9 @@ def bare_plot(material_id, data_directory, plot_dos=False, e_bounds=[-4, 4]):
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.tick_params(left=False, bottom=False)
+        ax.yaxis.grid(False)
     
     plt.subplots_adjust(left=-0.001, right=1, top=1+0.001, bottom=0)
-    plt.savefig('out.png', bbox_inches=0, pad_inches=0)
+    plt.savefig('out.png', bbox_inches=0, pad_inches=0, dpi=1024)
 
     
