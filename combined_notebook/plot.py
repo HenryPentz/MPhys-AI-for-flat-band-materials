@@ -41,6 +41,7 @@ def bare_plot(material_id, data_directory, plot_dos=False, e_bounds=[-4, 4]):
     bands=BandStructureSymmLine.from_dict(bands_dict)
 
     # create plotter object
+    
     bsp=BSDOSPlotter(vb_energy_range=-e_bounds[0], cb_energy_range=e_bounds[1], fixed_cb_energy=True, font="DejaVu Sans", axis_fontsize=0, tick_fontsize=0, legend_fontsize=0, bs_legend=None, rgb_legend=False, fig_size=(8, 8), dos_legend=None)
 
     filename_dos = data_directory+f"/dos/{material_id}.json"
