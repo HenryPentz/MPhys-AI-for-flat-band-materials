@@ -9,7 +9,7 @@ from pymatgen.electronic_structure.bandstructure import BandStructureSymmLine
 from pymatgen.electronic_structure.dos import CompleteDos
 from pymatgen.electronic_structure.plotter import BSDOSPlotter
 
-def plot(material_id, data_directory, e_bounds=[-4, 4]):
+def band_plot(material_id, data_directory, plot_dos, e_bounds=[-4, 4]):
 
     # get bands data
     filename_bands = data_directory+f"/bands/{material_id}.json"
@@ -23,7 +23,7 @@ def plot(material_id, data_directory, e_bounds=[-4, 4]):
     bsp=BSDOSPlotter(vb_energy_range=-e_bounds[0], cb_energy_range=e_bounds[1], fixed_cb_energy=True, font="DejaVu Sans")
 
     filename_dos = data_directory+f"/dos/{material_id}.json"
-    if os.path.isfile(filename_dos):
+    if os.path.isfile(filename_dos) and plot_dos:
         dos_dict=json.load(open(filename_dos))
         dos=CompleteDos.from_dict(dos_dict)
         ax = bsp.get_plot(bands, dos=dos)
@@ -73,4 +73,45 @@ def bare_plot(material_id, data_directory, plot_dos=False, e_bounds=[-4, 4]):
     plt.subplots_adjust(left=-0.001, right=1, top=1+0.001, bottom=0)
     plt.savefig('out.png', bbox_inches=0, pad_inches=0, dpi=1024)
 
+def check_plot(material_id, data_directory, plot_dos=False, e_bounds=[-8, 8]):
+    # get bands data
+    filename_bands = data_directory+f"/bands/{material_id}.json"
+    if not os.path.isfile(filename_bands):
+        raise FileNotFoundError("No such file %s" % filename_bands)
+        
+    bands_dict=json.load(open(filename_bands))
+    bands=BandStructureSymmLine.from_dict(bands_dict)
+
+    # create plotter object
+    
+    bsp=BSDOSPlotter(vb_energy_range=-e_bounds[0]-bands_dict["efermi"], cb_energy_range=e_bounds[1]-bands_dict["efermi"], fixed_cb_energy=True, font="DejaVu Sans", axis_fontsize=20, tick_fontsize=15, legend_fontsize=15, bs_legend=None, rgb_legend="upper right", fig_size=(8, 8), dos_legend=None)
+
+    filename_dos = data_directory+f"/dos/{material_id}.json"
+    if os.path.isfile(filename_dos) and plot_dos:
+        print("null")
+#         dos_dict=json.load(open(filename_dos))
+#         dos=CompleteDos.from_dict(dos_dict)
+#         ax = bsp.get_plot(bands, dos=dos)
+
+#         for axi in ax:
+#             axi.spines['left'].set_visible(False)
+#             axi.spines['bottom'].set_visible(False)
+#             axi.spines['right'].set_visible(False)
+#             axi.spines['top'].set_visible(False)
+#             axi.tick_params(left=False, bottom=False)
+#             axi.yaxis.grid(False)
+            
+#         plt.subplots_adjust(wspace=0)
+    else:
+        ax = bsp.get_plot(bands)  
+
+#         ax.spines['left'].set_visible(False)
+#         ax.spines['bottom'].set_visible(False)
+#         ax.spines['right'].set_visible(False)
+#         ax.spines['top'].set_visible(False)
+#         ax.tick_params(left=False, bottom=False)
+#         ax.yaxis.grid(False)
+    
+    plt.subplots_adjust(left=-0.001, right=1, top=1+0.001, bottom=0)
+    plt.savefig('out.png', bbox_inches=0, pad_inches=0, dpi=1024)
     
